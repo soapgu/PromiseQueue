@@ -7,12 +7,12 @@ class NormalTask extends superPromise  {
 
     /**
      * 执行
-     * @param {Array<Promise<string>>} tasks
+     * @param {(()=>Promise<string>)[]} tasks
      * 
      * @returns {Promise<Array<string>>} - 所以执行结果
      */
     async excuteTasks( tasks ){
-        const results = await Promise.all( tasks );
+        const results = await Promise.all( tasks.map( t => t() ) );
         return results;
     }
 }

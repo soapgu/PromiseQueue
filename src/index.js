@@ -1,8 +1,13 @@
 const normal = require('./normalPromise');
+const single = require('./singlePromise');
 const SuperPromise = require('./superPromise');
 const logger = require('./logger');
 
-const createTasks = ()=> [1,2,2,3,4].map( (item,index) => new Promise( (resolve, _reject) =>{
+/**
+ * 
+ * @returns {(()=>Promise<string>)[]}
+ */
+const createTasks = ()=> [1,2,2,3,4].map( (item,index) => ()=> new Promise( (resolve, _reject) =>{
     logger.info( `task-${index} start` )
     setTimeout( ()=>{
         logger.info( `task-${index} end` );
@@ -10,7 +15,11 @@ const createTasks = ()=> [1,2,2,3,4].map( (item,index) => new Promise( (resolve,
     }, item * 1000 );
 } ));
 
-const createAppendTasks = ()=> [1,2,3].map( (item,index) => new Promise( (resolve, _reject) =>{
+/**
+ * 
+ * @returns {(()=>Promise<string>)[]}
+ */
+const createAppendTasks = ()=> [1,2,3].map( (item,index) => ()=> new Promise( (resolve, _reject) =>{
     logger.info( `append task-${index} start` )
     setTimeout( ()=>{
         logger.info( `append task-${index} end` );
@@ -19,8 +28,8 @@ const createAppendTasks = ()=> [1,2,3].map( (item,index) => new Promise( (resolv
 } ));
 
 /**
- * 
- * @param {SuperPromise} excutor 
+ * 执行5个promise和3个追加的promise
+ * @param {SuperPromise} excutor -异步执行对象
  */
 async function run( excutor ){
     let tasks = excutor.excuteTasks( createTasks() );
@@ -36,6 +45,9 @@ const main = async () => {
     console.log("<<<<<<< begin excute normal tasks >>>>>>>");
     await run(normal);
     console.log("<<<<<<< end excute normal tasks >>>>>>>");
+    console.log("+++++++ begin excute single tasks +++++++");
+    await run(single);
+    console.log("+++++++ end excute single tasks +++++++");
 };
 
 main().catch(error => {
