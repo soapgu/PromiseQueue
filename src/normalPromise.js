@@ -1,6 +1,9 @@
-class NormalTask {
-    constructor(){}
+const superPromise = require('./superPromise');
 
+class NormalTask extends superPromise  {
+    constructor(){
+        super();
+    }
 
     /**
      * 执行
