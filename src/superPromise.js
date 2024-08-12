@@ -1,7 +1,7 @@
 class SuperPromise {
     /**
      * 执行
-     * @param {Array<Promise<string>>} tasks
+     * @param {(()=>Promise<string>)[]} tasks
      * 
      * @returns {Promise<Array<string>>} - 所以执行结果
      */
